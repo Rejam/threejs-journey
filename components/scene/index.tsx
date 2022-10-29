@@ -1,10 +1,8 @@
 "use client";
-import { useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-
-import { CustomObject } from "components/custom-object.tsx";
-
-import type { Group, Mesh } from "three";
+import { Center, MeshReflectorMaterial, Text3D } from "@react-three/drei";
+import { useRef } from "react";
+import { Group, Mesh } from "three";
 
 export function Scene() {
   return (
@@ -14,57 +12,54 @@ export function Scene() {
   );
 }
 
-const COLORS = ["blue", "orange", "red", "green"] as const;
-type Color = typeof COLORS[number];
-
 export function SceneContent() {
-  const groupRef = useRef<Group>(null!);
-  const cubeRef = useRef<Mesh>(null!);
-  const [sphereColor, setSphereColor] = useState<Color>("orange");
+  const textRef = useRef<Group>(null);
 
-  useFrame((state, delta) => {
-    cubeRef.current.rotation.y += 0.01 * delta * 60;
-    groupRef.current.rotation.y += 0.01 * delta * 60;
-
+  useFrame((state) => {
     const { camera, clock } = state;
-    const angle = clock.elapsedTime;
-    camera.position.x = Math.sin(angle) * 5;
-    camera.position.y = 4;
-    camera.position.z = Math.cos(angle) * 5;
-    camera.lookAt(groupRef.current.position);
+    const angle = clock.elapsedTime * 0.8;
+    camera.position.x = Math.sin(angle) * 2.5;
+    camera.position.y = 1.8;
+    camera.position.z = Math.cos(angle) * 2.5;
+    textRef.current && camera.lookAt(textRef.current.position);
   });
-
-  const handleChangeSphereColor = () => {
-    setSphereColor((current) => {
-      const altColors = COLORS.filter((c) => c !== current);
-      return altColors[Math.floor(Math.random() * altColors.length)];
-    });
-  };
   return (
-    <>
-      <directionalLight position={[1, 2, 3]} intensity={1.1} />
-      <ambientLight intensity={0.3} />
-      <group ref={groupRef}>
-        <mesh position-x={-2} onClick={handleChangeSphereColor}>
-          <sphereGeometry />
-          <meshStandardMaterial color={sphereColor} />
-        </mesh>
-        <mesh
-          ref={cubeRef}
-          position-x={2}
-          rotation-y={Math.PI * 0.25}
-          scale={1.5}
-        >
-          <boxGeometry />
-          <meshStandardMaterial color="mediumpurple" />
-        </mesh>
-      </group>
+    <group>
+      <spotLight
+        position={[0.5, 2.5, -0.5]}
+        intensity={5}
+        color="#f00"
+        castShadow
+        penumbra={1}
+      />
+      <spotLight
+        position={[-0.5, 2.5, 0.5]}
+        intensity={5}
+        color="#00f"
+        castShadow
+        penumbra={1}
+      />
+      {/* <directionalLight position={[1, 2, 3]} intensity={0.8} color="#ffffff" /> */}
+      {/* <ambientLight intensity={0.3} /> */}
+      {/* <fog attach="fog" color="hotpink" near={1} far={10} /> */}
 
-      <mesh position-y={-1} rotation-x={Math.PI * -0.5} scale={10}>
+      <Center disableY ref={textRef}>
+        <Text3D font={"HKNova_Bold.json"} castShadow>
+          NE6
+          {/* <meshPhongMaterial color="#000000" /> */}
+          <meshStandardMaterial color="#000000" />
+        </Text3D>
+      </Center>
+
+      <mesh position-y={0} rotation-x={Math.PI * -0.5} scale={10}>
         <planeGeometry />
-        <meshStandardMaterial color="greenyellow" />
+        <MeshReflectorMaterial
+          mirror={10}
+          resolution={1024}
+          //   blur={0.5}
+          //   mixBlur={0.9}
+        />
       </mesh>
-      <CustomObject />
-    </>
+    </group>
   );
 }
