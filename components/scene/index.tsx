@@ -22,9 +22,16 @@ export function SceneContent() {
   const cubeRef = useRef<Mesh>(null!);
   const [sphereColor, setSphereColor] = useState<Color>("orange");
 
-  useFrame((_, delta) => {
+  useFrame((state, delta) => {
     cubeRef.current.rotation.y += 0.01 * delta * 60;
     groupRef.current.rotation.y += 0.01 * delta * 60;
+
+    const { camera, clock } = state;
+    const angle = clock.elapsedTime;
+    camera.position.x = Math.sin(angle) * 5;
+    camera.position.y = 4;
+    camera.position.z = Math.cos(angle) * 5;
+    camera.lookAt(groupRef.current.position);
   });
 
   const handleChangeSphereColor = () => {
