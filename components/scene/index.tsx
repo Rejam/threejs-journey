@@ -1,8 +1,9 @@
 "use client";
+import { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Center, MeshReflectorMaterial, Text3D } from "@react-three/drei";
-import { useRef } from "react";
-import { Group, Mesh } from "three";
+
+import { Group } from "three";
 
 export function Scene() {
   return (
