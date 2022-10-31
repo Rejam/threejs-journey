@@ -40,14 +40,9 @@ export function SceneContent() {
         castShadow
         penumbra={1}
       />
-      {/* <directionalLight position={[1, 2, 3]} intensity={0.8} color="#ffffff" /> */}
-      {/* <ambientLight intensity={0.3} /> */}
-      {/* <fog attach="fog" color="hotpink" near={1} far={10} /> */}
-
       <Center disableY ref={textRef}>
         <Text3D font={"HKNova_Bold.json"} castShadow>
           NE6
-          {/* <meshPhongMaterial color="#000000" /> */}
           <meshStandardMaterial color="#000000" />
         </Text3D>
       </Center>
@@ -57,8 +52,6 @@ export function SceneContent() {
         <MeshReflectorMaterial
           mirror={10}
           resolution={1024}
-          //   blur={0.5}
-          //   mixBlur={0.9}
         />
       </mesh>
     </group>
