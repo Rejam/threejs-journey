@@ -12,7 +12,9 @@
     "@headlessui/react": "^1.7.3",
     "@react-three/drei": "^9.38.1",
     "@react-three/fiber": "^8.8.10",
+    "leva": "^0.9.34",
     "next": "13.0.0",
+    "r3f-perf": "^6.5.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "three": "^0.146.0"

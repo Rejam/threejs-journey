@@ -1,7 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import * as THREE from "three";
-import { extend, ReactThreeFiber } from "@react-three/fiber";
+import { extend, ReactThreeFiber, useFrame } from "@react-three/fiber";
 import {
   Center,
   Sparkles,
@@ -15,33 +16,15 @@ import portalFragmentShader from "./shaders/fragment";
 
 import type { Mesh } from "three";
 
-const PortalMaterial = shaderMaterial(
-  {
-    uTime: 0,
-    uColorStart: new THREE.Color("#ffffff"),
-    uColorEnd: new THREE.Color("#000000"),
-  },
-  portalVertexShader,
-  portalFragmentShader
-);
-
-extend({ PortalMaterial });
-
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      portalMaterial: ReactThreeFiber.Object3DNode<
-        typeof PortalMaterial,
-        typeof PortalMaterial
-      >;
-    }
-  }
-}
-
 export function PortalScene() {
+  const portalMaterialRef = useRef<typeof PortalMaterial>(null!);
   const portalModel = useGLTF("../portal/portal.glb");
   const portalTexture = useTexture("../portal/baked.jpg");
   portalTexture.flipY = false;
+
+  useFrame((_state, delta) => {
+    portalMaterialRef.current.uTime += delta;
+  });
 
   const portal = portalModel.nodes.baked as Mesh;
   const portalLight = portalModel.nodes.portalLight as Mesh;
@@ -57,16 +40,7 @@ export function PortalScene() {
         position={portalLight.position}
         rotation={portalLight.rotation}
       >
-        {/* <shaderMaterial
-          vertexShader={portalVertexShader}
-          fragmentShader={portalFragmentShader}
-          uniforms={{
-            uTime: { value: 0 },
-            uColorStart: { value: new THREE.Color("#ffffff") },
-            uColorEnd: { value: new THREE.Color("#000000") },
-          }}
-        /> */}
-        <portalMaterial />
+        <portalMaterial ref={portalMaterialRef} />
       </mesh>
       <mesh geometry={poleA.geometry} position={poleA.position}>
         <meshBasicMaterial color="#ffffe5" />
@@ -83,4 +57,37 @@ export function PortalScene() {
       />
     </Center>
   );
+}
+
+type ShaderMaterial<T = Uniforms> = typeof THREE.ShaderMaterial & {
+  key: string;
+} & T;
+type Uniforms = {
+  uTime: number;
+  uColorStart: THREE.Color;
+  uColorEnd: THREE.Color;
+};
+
+const uniforms: Uniforms = {
+  uTime: 0,
+  uColorStart: new THREE.Color("#ffffff"),
+  uColorEnd: new THREE.Color("#000000"),
+};
+const PortalMaterial = shaderMaterial(
+  uniforms,
+  portalVertexShader,
+  portalFragmentShader
+) as ShaderMaterial<Uniforms>;
+
+extend({ PortalMaterial });
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      portalMaterial: ReactThreeFiber.Object3DNode<
+        typeof PortalMaterial,
+        typeof PortalMaterial
+      >;
+    }
+  }
 }

@@ -1,6 +1,7 @@
 "use client";
 import { Canvas as R3Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
+import { Perf } from "r3f-perf";
 
 export function Canvas({ children }: any) {
   return (
@@ -14,6 +15,7 @@ export function Canvas({ children }: any) {
           position: [1, 2, 6],
         }}
       >
+        <Perf position="top-left" />
         <OrbitControls />
         {children}
       </R3Canvas>
