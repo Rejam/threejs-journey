@@ -33,7 +33,6 @@ export function ThreeDTextScene() {
         castShadow
         penumbra={1}
       />
-
       <Center disableY ref={textRef}>
         <Text3D font={"../HKNova_Bold.json"} castShadow>
           NE6
