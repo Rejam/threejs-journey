@@ -1,9 +1,10 @@
-import { Scene } from "components/scene";
+import Link from "next/link";
 
-export default function Home() {
+export default function Page() {
   return (
-    <div className="h-screen">
-      <Scene />
+    <div className="flex flex-col h-screen gap-4 p-8 text-white underline">
+      <Link href="/3d-text">3D Text</Link>
+      <Link href="/portal">Portal</Link>
     </div>
   );
 }

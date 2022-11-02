@@ -1,19 +1,12 @@
 "use client";
+
 import { useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import { Center, MeshReflectorMaterial, Text3D } from "@react-three/drei";
 
-import { Group } from "three";
+import type { Group } from "three";
 
-export function Scene() {
-  return (
-    <Canvas>
-      <SceneContent />
-    </Canvas>
-  );
-}
-
-export function SceneContent() {
+export function ThreeDTextScene() {
   const textRef = useRef<Group>(null);
 
   useFrame((state) => {
@@ -40,26 +33,17 @@ export function SceneContent() {
         castShadow
         penumbra={1}
       />
-      {/* <directionalLight position={[1, 2, 3]} intensity={0.8} color="#ffffff" /> */}
-      {/* <ambientLight intensity={0.3} /> */}
-      {/* <fog attach="fog" color="hotpink" near={1} far={10} /> */}
 
       <Center disableY ref={textRef}>
-        <Text3D font={"HKNova_Bold.json"} castShadow>
+        <Text3D font={"../HKNova_Bold.json"} castShadow>
           NE6
-          {/* <meshPhongMaterial color="#000000" /> */}
           <meshStandardMaterial color="#000000" />
         </Text3D>
       </Center>
 
       <mesh position-y={0} rotation-x={Math.PI * -0.5} scale={10}>
         <planeGeometry />
-        <MeshReflectorMaterial
-          mirror={10}
-          resolution={1024}
-          //   blur={0.5}
-          //   mixBlur={0.9}
-        />
+        <MeshReflectorMaterial mirror={10} resolution={1024} />
       </mesh>
     </group>
   );
