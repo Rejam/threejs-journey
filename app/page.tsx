@@ -6,6 +6,7 @@ export default function Page() {
       <Link href="/basic">Basic</Link>
       <Link href="/3d-text">3D Text</Link>
       <Link href="/portal">Portal</Link>
+      <Link href="/popup">Popup</Link>
     </div>
   );
 }
