@@ -2,9 +2,9 @@
 
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
-import type { Mesh } from "three";
 import { useControls } from "leva";
+
+import type { Mesh } from "three";
 
 export function BasicScene() {
   const cube = useRef<Mesh>(null!);
@@ -23,8 +23,6 @@ export function BasicScene() {
   });
   return (
     <>
-      <OrbitControls makeDefault />
-
       <directionalLight position={[1, 2, 3]} intensity={1.5} />
       <ambientLight intensity={0.5} />
 

@@ -5,7 +5,7 @@ import { BasicScene } from "./scene";
 
 export default function Page() {
   return (
-    <Canvas useOrbitControls={true}>
+    <Canvas useOrbitControls={false} usePerf={false}>
       <BasicScene />
     </Canvas>
   );

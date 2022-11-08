@@ -6,7 +6,7 @@ import { PortalScene } from "./scene";
 export default function Page() {
   return (
     <Canvas>
-      <PortalScene />;
+      <PortalScene />
     </Canvas>
   );
 }
